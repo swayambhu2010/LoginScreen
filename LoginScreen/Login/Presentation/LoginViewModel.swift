@@ -20,6 +20,9 @@ class LoginViewModel: ObservableObject {
     @Published var passwordHintText = ""
     @Published var isValidPassword = false
     
+    @Published var users: [UserData] = []
+    
+   
     
     func validation() {
         
@@ -27,19 +30,39 @@ class LoginViewModel: ObservableObject {
             let userLogin = LoginModel(username: username, password: password)
             validatePassword(password)
             do {
-                let data = try JSONEncoder().encode(userLogin)
-                let loginEndpoint = Endpoint(baseURL: "https://www.example.com", path: "/user", method: .post, header: ["Content-Type": "application/json"], body: data)
+                let loginEndpoint = Endpoint(baseURL: "https://www.example.com", path: "/user", method: .post, header: ["Content-Type": "application/json"], body: userLogin)
                 
-                let user: UserModel? = await NetworkManager.shared.send(url: loginEndpoint)
-                
-            } catch {
+              
                 
             }
         }
     }
     
+    func localDBSave() {
+        DataBaseManager.shared.saveUser(userName: username, passWord: password)
+        fetchUser()
+    }
+    
+    func fetchUser() {
+        users = DataBaseManager.shared.getAllUsers()
+    }
+    
+    func deleteUser(indexSet: IndexSet) {
+        
+        indexSet.forEach { index in
+          let user = users[index]
+          DataBaseManager.shared.deleteUser(user: user)
+          fetchUser()
+        }
+    }
+    
+    func updateUser() {
+        DataBaseManager.shared.updateUser()
+        fetchUser()
+    }
+    
     func validatePassword(_ password: String) {
-        guard password.count > 8 else {
+        guard password.count >= 8 else {
             passwordHintText = "Please enter minimum 8 characters"
             return
         }

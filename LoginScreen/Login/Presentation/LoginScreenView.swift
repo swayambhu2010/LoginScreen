@@ -20,6 +20,8 @@ struct LoginScreenView: View {
                 Button {
                     // Action
                     viewModel.validation()
+                    viewModel.localDBSave()
+                    
                 } label: {
                     Text("SignUp")
                         .frame(maxWidth: .infinity)
@@ -31,8 +33,20 @@ struct LoginScreenView: View {
                 }
                 .padding()
             }
+            
+            List {
+                ForEach(viewModel.users, id: \.self) { user in
+                    NavigationLink {
+                        UserDetailView(user: user, viewModel: viewModel)
+                    } label: {
+                        Text("\(user.userName ?? "") is Saved")
+                    }
+                }
+                .onDelete { indexSet in
+                    viewModel.deleteUser(indexSet: indexSet)
+                }
+            }
             .navigationTitle("Login Page")
-           // .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

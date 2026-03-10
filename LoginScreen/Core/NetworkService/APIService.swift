@@ -11,12 +11,19 @@ import Foundation
 enum HTTPMethod: String {
     case get = "GET"
     case post = "POST"
+    case put = "PUT"
+    case delete = "DELETE"
+    case patch = "PATCH"
 }
 
 
 enum NetworkError: Error {
     case badrequest
     case decodingError
+    case invalidResponse
+    case serverError(statusCode: Int)
+    case emptyResponse
+    case defaultError
 }
 
 struct Endpoint {
@@ -25,7 +32,7 @@ struct Endpoint {
     
     var method: HTTPMethod
     var header: [String: String]?
-    var body: Data
+    var body: Any?
     
     var urlRequest: URLRequest? {
         let completeURL = baseURL + path
@@ -36,9 +43,10 @@ struct Endpoint {
         
         urlRequest.httpMethod = method.rawValue
         urlRequest.allHTTPHeaderFields = header
-        // Where to encode the data instead of in the viewmodel class
-        urlRequest.httpBody = body
-        
+        // Where to encode the data instead of in the viewmodel class(Here)
+        if let body = body {
+            urlRequest.httpBody = try? JSONSerialization.data(withJSONObject: body, options: JSONSerialization.WritingOptions.prettyPrinted)
+        }
         return urlRequest
     }
 }

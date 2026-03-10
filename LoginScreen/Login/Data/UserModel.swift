@@ -8,6 +8,7 @@
 import Foundation
 
 struct UserModel: Codable {
+    var userName: String
     var token: String
 }
 
