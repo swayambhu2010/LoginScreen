@@ -9,9 +9,14 @@ import Foundation
 import CoreData
 import Combine
 
-final class DataBaseManager: ObservableObject {
-    
-    static let shared = DataBaseManager()
+protocol DataBaseManagerProtocol {
+    func saveUser(userName: String, passWord: String)
+    func getAllUsers() -> [UserData]
+    func deleteUser(user: UserData)
+    func updateUser()
+}
+
+final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
     
     let persistentContainer: NSPersistentContainer
     
