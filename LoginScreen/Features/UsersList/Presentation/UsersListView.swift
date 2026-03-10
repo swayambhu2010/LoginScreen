@@ -23,7 +23,7 @@ struct UsersListView: View {
             List {
                 ForEach(viewModel.users, id: \.self) { user in
                     NavigationLink {
-                        UserDetailView(user: user, viewModel: viewModel)
+                        UserDetailView(user: user)
                     } label: {
                         Text("\(user.userName ?? "") is saved")
                     }
@@ -36,6 +36,7 @@ struct UsersListView: View {
                 viewModel.saveUser(userName: userName, passWord: password)
                 viewModel.getAllUsers()
             }
+            .navigationTitle("User List")
         }
     }
     
