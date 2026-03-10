@@ -9,15 +9,32 @@ import SwiftUI
 
 struct UsersListView: View {
     
-    @ObservedObject var viewModel: LoginViewModel
+    @StateObject var viewModel: UserListViewModel = UserListViewModel(userListUseCase: UserListUseCase(userListRepository: UsersListRepository(databaseManager: DataBaseManager())))
+    var userName: String
+    var password: String
+    
+    init(userName: String, password: String) {
+        self.userName = userName
+        self.password = password
+    }
     
     var body: some View {
-        List {
-            ForEach(viewModel.users, id: \.self) { user in
-                Text("\(user.userName ?? "") is saved")
+        NavigationStack {
+            List {
+                ForEach(viewModel.users, id: \.self) { user in
+                    NavigationLink {
+                        UserDetailView(user: user, viewModel: viewModel)
+                    } label: {
+                        Text("\(user.userName ?? "") is saved")
+                    }
+                }
+                .onDelete { indexSet in
+                    deleteUser(indexSet: indexSet)
+                }
             }
-            .onDelete { indexSet in
-                deleteUser(indexSet: indexSet)
+            .onAppear {
+                viewModel.saveUser(userName: userName, passWord: password)
+                viewModel.getAllUsers()
             }
         }
     }
@@ -28,5 +45,5 @@ struct UsersListView: View {
 }
 
 #Preview {
-    UsersListView(viewModel: LoginViewModel(dataBaseManager: DataBaseManager()))
+    UsersListView(userName: "Demo", password: "Demo")
 }

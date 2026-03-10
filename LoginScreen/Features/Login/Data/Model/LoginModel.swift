@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct UserModel: Codable {
-    var userName: String
-    var token: String
-}
-
 struct LoginModel: Codable {
     var username: String?
     var password: String?

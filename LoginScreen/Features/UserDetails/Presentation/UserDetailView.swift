@@ -11,7 +11,7 @@ import CoreData
 struct UserDetailView: View {
      var user: UserData
     // @State private var userName = ""
-     @ObservedObject var viewModel: LoginViewModel
+     @ObservedObject var viewModel: UserListViewModel
     
     // If not an coredata object then alternative way
     /* init(user: UserData, userName: String, viewModel: LoginViewModel) {
@@ -39,7 +39,7 @@ struct UserDetailView: View {
             
             Button {
                // user.userName = userName
-                viewModel.updateUser()
+               // viewModel.updateUser()
             } label: {
                 Text("Update")
                     .frame(maxWidth: .infinity)
@@ -56,5 +56,5 @@ struct UserDetailView: View {
 }
 
 #Preview {
-    UserDetailView(user: UserData(), viewModel: LoginViewModel(dataBaseManager: DataBaseManager()))
+   // UserDetailView(user: UserData(), viewModel: UserListViewModel())
 }

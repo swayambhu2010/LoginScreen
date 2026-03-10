@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol NetworkServiceProtocol {
-    func send<T: Decodable>(url: Endpoint) async throws -> T?
+    func send<T: Decodable>(url: Endpoint) async -> Result<T?, NetworkError>
 }
 
 final class NetworkManager: NetworkServiceProtocol {
@@ -22,25 +22,26 @@ final class NetworkManager: NetworkServiceProtocol {
         self.decoder = decode
     }
     
-    func send<T>(url: Endpoint) async throws -> T? where T : Decodable {
+    func send<T>(url: Endpoint) async -> Result<T?, NetworkError> where T : Decodable {
         
-        guard let urlRequest = url.urlRequest else { return nil }
-    
-        let data = try await session.exectute(request: urlRequest)
-        
-        switch data {
-        case .success(let data):
-            let user: Result<T?, NetworkError> = try decoder.decode(data: data)
-            switch user {
-            case .success(let model):
-                return model
-            case .failure(let error):
-                debugPrint("Handle the Error")
-            }
+        guard let urlRequest = url.urlRequest else { return .failure(NetworkError.badrequest) }
+        do {
+            let data = try await session.exectute(request: urlRequest)
             
-        case .failure(let error):
-            debugPrint("Handle the Error")
+            switch data {
+            case .success(let data):
+                let user: Result<T?, NetworkError> = try decoder.decode(data: data)
+                switch user {
+                case .success(let model):
+                    return .success(model)
+                case .failure(let error):
+                    return .failure(error)
+                }
+            case .failure(let error):
+                return .failure(error)
+            }
+        } catch {
+            return .failure(NetworkError.defaultError)
         }
-        return nil
     }
 }

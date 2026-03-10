@@ -10,7 +10,7 @@ import Combine
 
 class LoginViewModel: ObservableObject {
     
-    @Published var username: String = ""
+    @Published var userName: String = ""
     @Published var password: String = "" {
         didSet {
             validatePassword(password)
@@ -19,58 +19,30 @@ class LoginViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var passwordHintText = ""
     @Published var isValidPassword = false
+    @Published var errorMessage: String?
     
-    @Published var users: [UserData] = []
+    private let loginUseCase: LoginUseCaseProtocol
     
-    private let dataBaseManager: DataBaseManagerProtocol
-    
-    init(dataBaseManager: DataBaseManagerProtocol) {
-        self.dataBaseManager = dataBaseManager
+    init(loginUseCase: LoginUseCaseProtocol) {
+        self.loginUseCase = loginUseCase
     }
     
     func validation() {
-        
         Task {
-            let userLogin = LoginModel(username: username, password: password)
-            validatePassword(password)
-            do {
-                let loginEndpoint = Endpoint(baseURL: "https://www.example.com", path: "/user", method: .post, header: ["Content-Type": "application/json"], body: userLogin)
-                
-              
-                
+           let result = await loginUseCase.loginValidation(userName: userName, password: password)
+            switch result {
+            case .success(_):
+                isValidPassword = true
+            case .failure(_):
+                // Hard coded for demo project
+                isValidPassword = true
+               // errorMessage = error.localizedDescription
             }
         }
     }
     
-    func localDBSave() {
-        dataBaseManager.saveUser(userName: username, passWord: password)
-        fetchUser()
-    }
-    
-    func fetchUser() {
-        users = dataBaseManager.getAllUsers()
-    }
-    
-    func deleteUser(indexSet: IndexSet) {
-        
-        indexSet.forEach { index in
-          let user = users[index]
-          dataBaseManager.deleteUser(user: user)
-          fetchUser()
-        }
-    }
-    
-    func updateUser() {
-        dataBaseManager.updateUser()
-        fetchUser()
-    }
-    
     func validatePassword(_ password: String) {
-        guard password.count >= 8 else {
-            passwordHintText = "Please enter minimum 8 characters"
-            return
-        }
-        passwordHintText = ""
+        passwordHintText = loginUseCase.validatePassword(password)
     }
     
 }

@@ -8,20 +8,18 @@
 import SwiftUI
 
 struct LoginScreenView: View {
-    @StateObject var viewModel = LoginViewModel(dataBaseManager: DataBaseManager())
+    @StateObject var viewModel = LoginViewModel(loginUseCase: LoginUseCase(loginRepository: LoginRepository(networkProvider: NetworkService())))
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                TextFieldProvider(isSecureField: false, placeHolderText: "Please enter your username", text: $viewModel.username)
+                TextFieldProvider(isSecureField: false, placeHolderText: "Please enter your username", text: $viewModel.userName)
                 TextFieldProvider(isSecureField: true, placeHolderText: "Please enter your password", text: $viewModel.password)
                 HintText(hintText: $viewModel.passwordHintText)
                 
                 Button {
                     // Action
                     viewModel.validation()
-                    viewModel.localDBSave()
-                    
                 } label: {
                     Text("SignUp")
                         .frame(maxWidth: .infinity)
@@ -33,20 +31,19 @@ struct LoginScreenView: View {
                 }
                 .padding()
             }
-            
-            List {
-                ForEach(viewModel.users, id: \.self) { user in
-                    NavigationLink {
-                        UserDetailView(user: user, viewModel: viewModel)
-                    } label: {
-                        Text("\(user.userName ?? "") is Saved")
-                    }
-                }
-                .onDelete { indexSet in
-                    viewModel.deleteUser(indexSet: indexSet)
-                }
-            }
             .navigationTitle("Login Page")
+            .navigationDestination(isPresented: $viewModel.isValidPassword) {
+                UsersListView(userName: viewModel.userName, password: viewModel.password)
+            }
+            .alert("Warning", isPresented: Binding(
+                get: { viewModel.errorMessage != nil },
+                set: {_ in viewModel.errorMessage = nil }
+                )
+            ) {
+                Button("Ok", role: .cancel) { }
+            } message: {
+                Text(viewModel.errorMessage ?? "")
+            }
         }
     }
 }
