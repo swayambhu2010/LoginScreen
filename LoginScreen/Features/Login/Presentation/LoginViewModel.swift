@@ -22,7 +22,11 @@ class LoginViewModel: ObservableObject {
     
     @Published var users: [UserData] = []
     
-   
+    private let dataBaseManager: DataBaseManagerProtocol
+    
+    init(dataBaseManager: DataBaseManagerProtocol) {
+        self.dataBaseManager = dataBaseManager
+    }
     
     func validation() {
         
@@ -39,25 +43,25 @@ class LoginViewModel: ObservableObject {
     }
     
     func localDBSave() {
-        DataBaseManager.shared.saveUser(userName: username, passWord: password)
+        dataBaseManager.saveUser(userName: username, passWord: password)
         fetchUser()
     }
     
     func fetchUser() {
-        users = DataBaseManager.shared.getAllUsers()
+        users = dataBaseManager.getAllUsers()
     }
     
     func deleteUser(indexSet: IndexSet) {
         
         indexSet.forEach { index in
           let user = users[index]
-          DataBaseManager.shared.deleteUser(user: user)
+          dataBaseManager.deleteUser(user: user)
           fetchUser()
         }
     }
     
     func updateUser() {
-        DataBaseManager.shared.updateUser()
+        dataBaseManager.updateUser()
         fetchUser()
     }
     
@@ -66,7 +70,6 @@ class LoginViewModel: ObservableObject {
             passwordHintText = "Please enter minimum 8 characters"
             return
         }
-        
         passwordHintText = ""
     }
     

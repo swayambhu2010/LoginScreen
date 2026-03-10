@@ -10,11 +10,9 @@ import SwiftUI
 @main
 struct LoginScreenApp: App {
     
-    @StateObject var databaseManager = DataBaseManager()
-    
     var body: some Scene {
         WindowGroup {
-            LoginScreenView().environmentObject(databaseManager)
+            LoginScreenView()
         }
     }
 }

@@ -56,5 +56,5 @@ struct UserDetailView: View {
 }
 
 #Preview {
-    UserDetailView(user: UserData(), viewModel: LoginViewModel())
+    UserDetailView(user: UserData(), viewModel: LoginViewModel(dataBaseManager: DataBaseManager()))
 }
