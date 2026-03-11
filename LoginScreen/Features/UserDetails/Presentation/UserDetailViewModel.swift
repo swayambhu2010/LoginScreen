@@ -10,9 +10,9 @@ import Combine
 
 class UserDetailViewModel: ObservableObject {
     
-    private let userDetailsUseCase: UserDetailsUseCase
+    private let userDetailsUseCase: UserDetailsUseCaseProtocol
     
-    init(userDetailsUseCase: UserDetailsUseCase) {
+    init(userDetailsUseCase: UserDetailsUseCaseProtocol) {
         self.userDetailsUseCase = userDetailsUseCase
     }
     
