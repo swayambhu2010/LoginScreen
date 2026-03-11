@@ -16,8 +16,8 @@ class UserDetailsRepository: UserDetailsRepositoryProtocol {
     
     private let databaseManager: DataBaseManagerProtocol
     
-    init() {
-        self.databaseManager = DataBaseManager.shared
+    init(databaseManager: DataBaseManagerProtocol) {
+        self.databaseManager = databaseManager
     }
     
     func updateUser(user: LoginModel) {

@@ -10,12 +10,15 @@ import Foundation
 final class AppContainer {
     
     static let shared = AppContainer()
+    lazy var databaseManager: DataBaseManager = {
+        DataBaseManager()
+    }()
     
     private init() { }
     
     func makeLoginViewModel() -> LoginViewModel {
         let networkService: NetworkServiceProviderProtocol = NetworkService()
-        let dataBaseService: DataBaseProviderProtocol = DataBaseProvider()
+        let dataBaseService: DataBaseProviderProtocol = DataBaseProvider(databaseManager: databaseManager)
         
         let loginRepository = LoginRepository(networkProvider: networkService, dataBaseProvider: dataBaseService)
         let loginUseCase = LoginUseCase(loginRepository: loginRepository)
@@ -26,7 +29,7 @@ final class AppContainer {
     
     
     func makeUserDetailsViewModel() -> UserDetailViewModel {
-        let userDetailsRepository = UserDetailsRepository()
+        let userDetailsRepository = UserDetailsRepository(databaseManager: databaseManager)
         let userDetailsUseCase = UserDetailsUseCase(userDetailsRepository: userDetailsRepository)
         
         let userDetailsViewModel = UserDetailViewModel(userDetailsUseCase: userDetailsUseCase)
@@ -34,7 +37,7 @@ final class AppContainer {
     }
     
     func makeUserListViewModel() -> UserListViewModel {
-        let userListRepository = UsersListRepository()
+        let userListRepository = UsersListRepository(databaseManager: databaseManager)
         let userListUseCase = UserListUseCase(userListRepository: userListRepository)
         
         let userListViewModel = UserListViewModel(userListUseCase: userListUseCase)

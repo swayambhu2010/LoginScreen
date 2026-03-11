@@ -18,11 +18,9 @@ protocol DataBaseManagerProtocol {
 
 final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
     
-    static let shared = DataBaseManager()
-    
     let persistentContainer: NSPersistentContainer
     
-    private init() {
+    init() {
        persistentContainer = NSPersistentContainer(name: "UserCoreDataModel")
        persistentContainer.loadPersistentStores { (description, error) in
            if let error = error {

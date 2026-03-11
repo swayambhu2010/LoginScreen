@@ -18,8 +18,8 @@ class UsersListRepository: UsersListRepositoryProtocol {
     
     let databaseManager: DataBaseManagerProtocol
     
-    init() {
-        self.databaseManager = DataBaseManager.shared
+    init(databaseManager: DataBaseManagerProtocol) {
+        self.databaseManager = databaseManager
     }
     
     func saveUser(user: LoginModel) {
