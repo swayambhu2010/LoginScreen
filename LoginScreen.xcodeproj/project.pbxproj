@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		874BB4182F61BA1F00811335 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8767882F2F5998AE000630BC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 876788362F5998AE000630BC;
+			remoteInfo = LoginScreen;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		874BB4142F61BA1F00811335 /* LoginScreenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginScreenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		876788372F5998AE000630BC /* LoginScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoginScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		874BB4152F61BA1F00811335 /* LoginScreenTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LoginScreenTests;
+			sourceTree = "<group>";
+		};
 		876788392F5998AE000630BC /* LoginScreen */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = LoginScreen;
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		874BB4112F61BA1F00811335 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		876788342F5998AE000630BC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				876788392F5998AE000630BC /* LoginScreen */,
+				874BB4152F61BA1F00811335 /* LoginScreenTests */,
 				876788382F5998AE000630BC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				876788372F5998AE000630BC /* LoginScreen.app */,
+				874BB4142F61BA1F00811335 /* LoginScreenTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		874BB4132F61BA1F00811335 /* LoginScreenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 874BB41A2F61BA1F00811335 /* Build configuration list for PBXNativeTarget "LoginScreenTests" */;
+			buildPhases = (
+				874BB4102F61BA1F00811335 /* Sources */,
+				874BB4112F61BA1F00811335 /* Frameworks */,
+				874BB4122F61BA1F00811335 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				874BB4192F61BA1F00811335 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				874BB4152F61BA1F00811335 /* LoginScreenTests */,
+			);
+			name = LoginScreenTests;
+			packageProductDependencies = (
+			);
+			productName = LoginScreenTests;
+			productReference = 874BB4142F61BA1F00811335 /* LoginScreenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		876788362F5998AE000630BC /* LoginScreen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 876788422F5998B0000630BC /* Build configuration list for PBXNativeTarget "LoginScreen" */;
@@ -80,6 +128,10 @@
 				LastSwiftUpdateCheck = 2630;
 				LastUpgradeCheck = 2630;
 				TargetAttributes = {
+					874BB4132F61BA1F00811335 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 876788362F5998AE000630BC;
+					};
 					876788362F5998AE000630BC = {
 						CreatedOnToolsVersion = 26.3;
 					};
@@ -100,11 +152,19 @@
 			projectRoot = "";
 			targets = (
 				876788362F5998AE000630BC /* LoginScreen */,
+				874BB4132F61BA1F00811335 /* LoginScreenTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		874BB4122F61BA1F00811335 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		876788352F5998AE000630BC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +175,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		874BB4102F61BA1F00811335 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		876788332F5998AE000630BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +191,55 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		874BB4192F61BA1F00811335 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 876788362F5998AE000630BC /* LoginScreen */;
+			targetProxy = 874BB4182F61BA1F00811335 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		874BB41B2F61BA1F00811335 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swayambhu.LoginScreenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoginScreen.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LoginScreen";
+			};
+			name = Debug;
+		};
+		874BB41C2F61BA1F00811335 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Swayambhu.LoginScreenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoginScreen.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LoginScreen";
+			};
+			name = Release;
+		};
 		876788402F5998B0000630BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -309,6 +424,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		874BB41A2F61BA1F00811335 /* Build configuration list for PBXNativeTarget "LoginScreenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				874BB41B2F61BA1F00811335 /* Debug */,
+				874BB41C2F61BA1F00811335 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		876788322F5998AE000630BC /* Build configuration list for PBXProject "LoginScreen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

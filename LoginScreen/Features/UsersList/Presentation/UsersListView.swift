@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UsersListView: View {
     
-    @StateObject var viewModel: UserListViewModel = UserListViewModel(userListUseCase: UserListUseCase(userListRepository: UsersListRepository()))
+    @StateObject var viewModel: UserListViewModel = AppContainer.shared.makeUserListViewModel()
     
     var body: some View {
         NavigationStack {
