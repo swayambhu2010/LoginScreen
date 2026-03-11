@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class UserListViewModel: ObservableObject {
-    @Published var users: [UserData] = []
+    @Published var users: [LoginModel] = []
     
     private let userListUseCase: UserListUseCaseProtocol
     
@@ -17,23 +17,17 @@ class UserListViewModel: ObservableObject {
         self.userListUseCase = userListUseCase
     }
     
-    func saveUser(userName: String, passWord: String) {
-        userListUseCase.saveUser(userName: userName, passWord: passWord)
-        getAllUsers()
-        
+    func saveUser(user: LoginModel) {
+        userListUseCase.saveUser(user: user)
     }
     
     func getAllUsers() {
         users = userListUseCase.getAllUsers()
+        print(users)
     }
     
     func deleteUser(indexSet: IndexSet) {
         userListUseCase.deleteUser(indexSet: indexSet)
-        getAllUsers()
-    }
-    
-    func updateUser() {
-        userListUseCase.updateUser()
         getAllUsers()
     }
 }

@@ -9,29 +9,15 @@ import SwiftUI
 import CoreData
 
 struct UserDetailView: View {
-     var user: UserData
-    // @State private var userName = ""
-    @StateObject var viewModel: UserDetailViewModel = UserDetailViewModel(userDetailsUseCase: UserDetailsUseCase(userDetailsRepository: UserDetailsRepository(databaseManager: DataBaseManager())))
+    @Binding var users: LoginModel
+    @StateObject var viewModel: UserDetailViewModel = UserDetailViewModel(userDetailsUseCase: UserDetailsUseCase(userDetailsRepository: UserDetailsRepository()))
     
     @Environment(\.dismiss) var dismiss
-    
-    // If not an coredata object then alternative way
-    /* init(user: UserData, userName: String, viewModel: LoginViewModel) {
-        self.user = user
-     // To check which one from the below actually works
-         self.userName = userName
-        _userName = State(initialValue: userName)
-        self.viewModel = viewModel
-    } */
     
     var body: some View {
         NavigationStack {
             VStack(spacing: 30) {
-                // Below Binding works because user is a coredata object
-                TextField("Please update username", text: Binding(
-                    get: { user.userName ?? "" },
-                    set: { user.userName = $0 }
-                ), prompt: Text("Please update username"))
+                TextField("Please update username", text: $users.username, prompt: Text("Please update username"))
                 .frame(maxWidth: .infinity)
                 .frame(height: 40)
                 .padding(10)
@@ -41,7 +27,7 @@ struct UserDetailView: View {
                 }
                 
                 Button {
-                     viewModel.updateUser()
+                     viewModel.updateUser(user: users)
                      dismiss()
                 } label: {
                     Text("Update")
@@ -60,5 +46,13 @@ struct UserDetailView: View {
 }
 
 #Preview {
-   UserDetailView(user: UserData(), viewModel: UserDetailViewModel(userDetailsUseCase: UserDetailsUseCase(userDetailsRepository: UserDetailsRepository(databaseManager: DataBaseManager()))))
+    UserDetailView(
+            users: .constant(
+                LoginModel(
+                    username: "Sjb",
+                    password: "123",
+                    uuid: UUID()
+                )
+            )
+        )
 }

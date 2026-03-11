@@ -8,6 +8,7 @@
 import Foundation
 
 struct LoginModel: Codable {
-    var username: String?
-    var password: String?
+    var username: String
+    var password: String
+    var uuid: UUID
 }

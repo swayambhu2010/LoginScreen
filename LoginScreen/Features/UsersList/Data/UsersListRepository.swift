@@ -9,33 +9,28 @@ import Foundation
 
 protocol UsersListRepositoryProtocol {
     // CRUD operation (Create, Read, Update, Delete)
-    func saveUser(userName: String, passWord: String)
-    func getAllUsers() -> [UserData]
-    func deleteUser(user: UserData)
-    func updateUser()
+    func saveUser(user: LoginModel)
+    func getAllUsers() -> [LoginModel]
+    func deleteUser(user: LoginModel)
 }
 
 class UsersListRepository: UsersListRepositoryProtocol {
     
     let databaseManager: DataBaseManagerProtocol
     
-    init(databaseManager: DataBaseManagerProtocol) {
-        self.databaseManager = databaseManager
+    init() {
+        self.databaseManager = DataBaseManager.shared
     }
     
-    func saveUser(userName: String, passWord: String) {
-        databaseManager.saveUser(userName: userName, passWord: passWord)
+    func saveUser(user: LoginModel) {
+        databaseManager.saveUser(userModel: user)
     }
     
-    func getAllUsers() -> [UserData] {
+    func getAllUsers() -> [LoginModel] {
         databaseManager.getAllUsers()
     }
     
-    func deleteUser(user: UserData) {
+    func deleteUser(user: LoginModel) {
         databaseManager.deleteUser(user: user)
-    }
-    
-    func updateUser() {
-        databaseManager.updateUser()
     }
 }

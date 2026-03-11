@@ -10,17 +10,19 @@ import CoreData
 import Combine
 
 protocol DataBaseManagerProtocol {
-    func saveUser(userName: String, passWord: String)
-    func getAllUsers() -> [UserData]
-    func deleteUser(user: UserData)
-    func updateUser()
+    func saveUser(userModel: LoginModel)
+    func getAllUsers() -> [LoginModel]
+    func deleteUser(user: LoginModel)
+    func updateUser(user: LoginModel)
 }
 
 final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
     
+    static let shared = DataBaseManager()
+    
     let persistentContainer: NSPersistentContainer
     
-    init() {
+    private init() {
        persistentContainer = NSPersistentContainer(name: "UserCoreDataModel")
        persistentContainer.loadPersistentStores { (description, error) in
            if let error = error {
@@ -28,12 +30,13 @@ final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
            }
         }
     }
-    
-    func saveUser(userName: String, passWord: String) {
+
+    func saveUser(userModel: LoginModel) {
         let user = UserData(context: persistentContainer.viewContext)
         
-        user.userName = userName
-        user.password = passWord
+        user.userName = userModel.username
+        user.password = userModel.password
+        user.userId = userModel.uuid
         
         do {
             try persistentContainer.viewContext.save()
@@ -42,18 +45,24 @@ final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
         }
     }
     
-    func getAllUsers() -> [UserData] {
+    func getAllUsers() -> [LoginModel] {
         let fetchRequest: NSFetchRequest<UserData> = UserData.fetchRequest()
         do {
             let users = try persistentContainer.viewContext.fetch(fetchRequest)
-            return users
+            print("All users \(users)")
+            let userModels = users.map { user in
+                return LoginModel(username: user.userName ?? "", password: user.password ?? "", uuid: user.userId ?? UUID())
+            }
+            return userModels
         } catch {
             print("Fetch Error")
             return []
         }
     }
     
-    func deleteUser(user: UserData) {
+    func deleteUser(user: LoginModel) {
+        let id = user.uuid
+        guard let user = fetchUser(id: id) else { return }
         persistentContainer.viewContext.delete(user)
         
         do {
@@ -64,12 +73,26 @@ final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
         }
     }
     
-    func updateUser() {
+    func updateUser(user: LoginModel) {
+            let id = user.uuid
+            guard let userData = fetchUser(id: id) else {
+            print("Fetch User Failed")
+            return
+        }
+        userData.userName = user.username
+        
         do {
             try persistentContainer.viewContext.save()
         } catch {
             persistentContainer.viewContext.rollback()
             print("Save context failed \(error.localizedDescription)")
         }
+    }
+    
+    func fetchUser(id: UUID) -> UserData? {
+        let fetchRequest : NSFetchRequest<UserData> = UserData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "userId == %@", id as CVarArg)
+        fetchRequest.fetchLimit = 1
+        return try? persistentContainer.viewContext.fetch(fetchRequest).first
     }
 }

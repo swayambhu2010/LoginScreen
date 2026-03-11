@@ -8,26 +8,25 @@
 import Foundation
 
 protocol UserListUseCaseProtocol {
-    func saveUser(userName: String, passWord: String)
-    func getAllUsers() -> [UserData]
+    func saveUser(user: LoginModel)
+    func getAllUsers() -> [LoginModel]
     func deleteUser(indexSet: IndexSet)
-    func updateUser()
 }
 
 class UserListUseCase: UserListUseCaseProtocol {
     
     private let userListRepository: UsersListRepositoryProtocol
-    var users: [UserData] = []
+    var users: [LoginModel] = []
     
     init(userListRepository: UsersListRepositoryProtocol) {
         self.userListRepository = userListRepository
     }
     
-    func saveUser(userName: String, passWord: String) {
-        userListRepository.saveUser(userName: userName, passWord: passWord)
+    func saveUser(user: LoginModel) {
+        userListRepository.saveUser(user: user)
     }
     
-    func getAllUsers() -> [UserData] {
+    func getAllUsers() -> [LoginModel] {
         users = userListRepository.getAllUsers()
         return users
     }
@@ -37,9 +36,5 @@ class UserListUseCase: UserListUseCaseProtocol {
             let user = users[index]
             userListRepository.deleteUser(user: user)
         }
-    }
-    
-    func updateUser() {
-        userListRepository.updateUser()
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 protocol LoginUseCaseProtocol {
     func loginValidation(userName: String, password: String) async -> Result<UserModel?, NetworkError>
     func validatePassword(_ password: String) -> String
+    func saveUser(user: LoginModel)
 }
 
 class LoginUseCase: LoginUseCaseProtocol {
@@ -29,5 +30,9 @@ class LoginUseCase: LoginUseCaseProtocol {
             return "Please enter minimum 8 characters"
         }
         return ""
+    }
+    
+    func saveUser(user: LoginModel) {
+        loginRepository.saveUser(user: user)
     }
 }

@@ -9,18 +9,18 @@ import Foundation
 import SwiftUI
 
 protocol UserDetailsRepositoryProtocol {
-    func updateUser()
+    func updateUser(user: LoginModel)
 }
 
 class UserDetailsRepository: UserDetailsRepositoryProtocol {
     
     private let databaseManager: DataBaseManagerProtocol
     
-    init(databaseManager: DataBaseManagerProtocol) {
-        self.databaseManager = databaseManager
+    init() {
+        self.databaseManager = DataBaseManager.shared
     }
     
-    func updateUser() {
-        databaseManager.updateUser()
+    func updateUser(user: LoginModel) {
+        databaseManager.updateUser(user: user)
     }
 }

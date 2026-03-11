@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginScreenView: View {
-    @StateObject var viewModel = LoginViewModel(loginUseCase: LoginUseCase(loginRepository: LoginRepository(networkProvider: NetworkService())))
+    @StateObject var viewModel = LoginViewModel(loginUseCase: LoginUseCase(loginRepository: LoginRepository(networkProvider: NetworkService(), dataBaseProvider: DataBaseProvider())))
     
     var body: some View {
         NavigationStack {
@@ -33,7 +33,7 @@ struct LoginScreenView: View {
             }
             .navigationTitle("Login Page")
             .navigationDestination(isPresented: $viewModel.isValidPassword) {
-                UsersListView(userName: viewModel.userName, password: viewModel.password)
+                UsersListView()
             }
             .alert("Warning", isPresented: Binding(
                 get: { viewModel.errorMessage != nil },

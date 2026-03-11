@@ -16,7 +16,7 @@ class UserDetailViewModel: ObservableObject {
         self.userDetailsUseCase = userDetailsUseCase
     }
     
-    func updateUser() {
-        userDetailsUseCase.updateUser()
+    func updateUser(user: LoginModel) {
+        userDetailsUseCase.updateUser(user: user)
     }
 }

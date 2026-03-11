@@ -20,6 +20,7 @@ extension UserData {
 
     @NSManaged public var userName: String?
     @NSManaged public var password: String?
+    @NSManaged public var userId: UUID?
 
 }
 
