@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class UserListViewModel: ObservableObject {
     @Published var users: [LoginModel] = []
     

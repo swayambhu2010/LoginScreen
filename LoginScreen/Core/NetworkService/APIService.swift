@@ -17,7 +17,7 @@ enum HTTPMethod: String {
 }
 
 
-enum NetworkError: Error {
+enum NetworkError: Error, Equatable {
     case badrequest
     case decodingError
     case invalidResponse

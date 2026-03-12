@@ -23,9 +23,9 @@ class NetworkService: NetworkServiceProviderProtocol {
     
     func loginValidation(userName: String, password: String) async -> Result<UserModel?, NetworkError> {
         
-            let userLogin = LoginModel(username: userName, password: password, uuid: UUID())
-            let loginEndpoint = Endpoint(baseURL: "https://www.example.com", path: "/user", method: .post, header: ["Content-Type": "application/json"], body: userLogin.dictionary)
-            let result: Result<UserModel?, NetworkError> = await network.send(url: loginEndpoint)
-            return result
+        let userLogin = LoginModel(username: userName, password: password, uuid: UUID())
+        let loginEndpoint = Endpoint(baseURL: "https://www.example.com", path: "/user", method: .post, header: ["Content-Type": "application/json"], body: userLogin.dictionary)
+        let result: Result<UserModel?, NetworkError> = await network.send(url: loginEndpoint)
+        return result
     }
 }

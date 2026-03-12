@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class LoginViewModel: ObservableObject {
     
     @Published var userName: String = ""
@@ -27,7 +28,6 @@ class LoginViewModel: ObservableObject {
         self.loginUseCase = loginUseCase
     }
     
-    // 532E6B52-9032-453F-8C36-1FEF9550995D
     func validation() {
         Task {
            let result = await loginUseCase.loginValidation(userName: userName, password: password)

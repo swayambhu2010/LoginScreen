@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class UserDetailViewModel: ObservableObject {
     
     private let userDetailsUseCase: UserDetailsUseCaseProtocol
