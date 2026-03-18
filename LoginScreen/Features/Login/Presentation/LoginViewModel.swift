@@ -19,13 +19,15 @@ class LoginViewModel: ObservableObject {
     }
     @Published var isLoading: Bool = false
     @Published var passwordHintText = ""
-    @Published var isValidPassword = false
     @Published var errorMessage: String?
+    
+    var loginSuccessClosure: (() -> Void)
     
     private let loginUseCase: LoginUseCaseProtocol
     
-    init(loginUseCase: LoginUseCaseProtocol) {
+    init(loginUseCase: LoginUseCaseProtocol, loginSuccess: @escaping () -> Void) {
         self.loginUseCase = loginUseCase
+        self.loginSuccessClosure = loginSuccess
     }
     
     func validation() {
@@ -36,12 +38,12 @@ class LoginViewModel: ObservableObject {
                 // Original Code should be there
                /* let loginModel = LoginModel(username: userName, password: password)
                 loginUseCase.saveUser(user: loginModel)*/
-                isValidPassword = true
+                loginSuccessClosure()
             case .failure(_):
                 // Hard coded for demo project
                 let loginModel = LoginModel(username: userName, password: password, uuid: UUID())
                 loginUseCase.saveUser(user: loginModel)
-                isValidPassword = true
+                loginSuccessClosure()
                // errorMessage = error.localizedDescription
             }
         }

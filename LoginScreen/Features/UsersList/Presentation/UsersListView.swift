@@ -16,7 +16,7 @@ struct UsersListView: View {
             List {
                 ForEach($viewModel.users, id: \.uuid) { $user in
                     NavigationLink {
-                        UserDetailView(users: $user)
+                        UserDetailView()
                     } label: {
                         Text("\(user.username) is saved")
                     }

@@ -16,6 +16,9 @@ struct LoginScreenApp: App {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
                 coordinator.makeLoginView()
+                    .navigationDestination(for: Route.self) { route in
+                        coordinator.makeScreenView(to: route)
+                    }
             }
         }
     }

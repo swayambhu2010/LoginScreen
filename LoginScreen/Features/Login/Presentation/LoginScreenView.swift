@@ -11,7 +11,6 @@ struct LoginScreenView: View {
     @StateObject var viewModel: LoginViewModel
     
     var body: some View {
-        NavigationStack {
             VStack(alignment: .leading) {
                 TextFieldProvider(isSecureField: false, placeHolderText: "Please enter your username", text: $viewModel.userName)
                 TextFieldProvider(isSecureField: true, placeHolderText: "Please enter your password", text: $viewModel.password)
@@ -31,10 +30,6 @@ struct LoginScreenView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Login Page")
-            .navigationDestination(isPresented: $viewModel.isValidPassword) {
-                UsersListView()
-            }
             .alert("Warning", isPresented: Binding(
                 get: { viewModel.errorMessage != nil },
                 set: {_ in viewModel.errorMessage = nil }
@@ -44,7 +39,6 @@ struct LoginScreenView: View {
             } message: {
                 Text(viewModel.errorMessage ?? "")
             }
-        }
     }
 }
 
@@ -91,6 +85,6 @@ struct HintText: View {
     }
 }
 
-#Preview {
+/*#Preview {
     LoginScreenView()
-}
+}*/

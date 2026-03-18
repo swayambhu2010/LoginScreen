@@ -44,7 +44,11 @@ class Coordinator: ObservableObject {
     }
     
     func makeLoginView() -> LoginScreenView {
-        let loginViewModel = LoginViewModel(loginUseCase: LoginUseCase(loginRepository: containter.loginRepository))
+        let loginViewModel = LoginViewModel(loginUseCase: LoginUseCase(
+                             loginRepository: containter.loginRepository),
+                             loginSuccess: { [weak self] in
+                                  self?.route(to: .userList)
+                             })
         return LoginScreenView(viewModel: loginViewModel)
     }
     
