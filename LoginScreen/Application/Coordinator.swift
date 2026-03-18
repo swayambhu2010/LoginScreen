@@ -54,6 +54,10 @@ class Coordinator: ObservableObject {
     
     func makeUserListView() -> UsersListView {
         let usersListViewModel = UserListViewModel(userListUseCase: UserListUseCase(userListRepository: containter.userListRepository))
+        
+        usersListViewModel.onUserSelected = { [weak self] user in
+            self?.route(to: .userDetails(user))
+        }
         return UsersListView(viewModel: usersListViewModel)
     }
     

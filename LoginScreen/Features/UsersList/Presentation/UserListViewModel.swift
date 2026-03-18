@@ -13,6 +13,7 @@ class UserListViewModel: ObservableObject {
     @Published var users: [LoginModel] = []
     
     private let userListUseCase: UserListUseCaseProtocol
+    var onUserSelected: ((LoginModel) -> Void)?
     
     init(userListUseCase: UserListUseCaseProtocol) {
         self.userListUseCase = userListUseCase
@@ -24,11 +25,14 @@ class UserListViewModel: ObservableObject {
     
     func getAllUsers() {
         users = userListUseCase.getAllUsers()
-        print(users)
     }
     
     func deleteUser(indexSet: IndexSet) {
         userListUseCase.deleteUser(indexSet: indexSet)
         getAllUsers()
+    }
+    
+    func selectUser(user: LoginModel) {
+        onUserSelected?(user)
     }
 }

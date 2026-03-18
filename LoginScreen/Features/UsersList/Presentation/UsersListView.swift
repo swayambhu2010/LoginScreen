@@ -12,11 +12,10 @@ struct UsersListView: View {
     @StateObject var viewModel: UserListViewModel
     
     var body: some View {
-        NavigationStack {
             List {
                 ForEach($viewModel.users, id: \.uuid) { $user in
-                    NavigationLink {
-                        UserDetailView()
+                    Button {
+                        viewModel.selectUser(user: user)
                     } label: {
                         Text("\(user.username) is saved")
                     }
@@ -29,7 +28,6 @@ struct UsersListView: View {
                 viewModel.getAllUsers()
             }
             .navigationTitle("User List")
-        }
     }
     
     func deleteUser(indexSet: IndexSet) {
@@ -37,6 +35,6 @@ struct UsersListView: View {
     }
 }
 
-#Preview {
+/*#Preview {
     UsersListView()
-}
+}*/

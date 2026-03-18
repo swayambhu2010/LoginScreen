@@ -14,7 +14,6 @@ struct UserDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        NavigationStack {
             VStack(spacing: 30) {
                 TextField("Please update username", text: $viewModel.userName, prompt: Text("Please update username"))
                 .frame(maxWidth: .infinity)
@@ -40,7 +39,6 @@ struct UserDetailView: View {
             }
             .navigationTitle("User Details")
             .padding()
-        }
     }
 }
 
