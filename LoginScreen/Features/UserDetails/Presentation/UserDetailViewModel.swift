@@ -13,11 +13,16 @@ class UserDetailViewModel: ObservableObject {
     
     private let userDetailsUseCase: UserDetailsUseCaseProtocol
     
-    init(userDetailsUseCase: UserDetailsUseCaseProtocol) {
+    @Published var userName: String
+    private var loginModel: LoginModel
+    
+    init(user: LoginModel, userDetailsUseCase: UserDetailsUseCaseProtocol) {
+        self.loginModel = user
+        self.userName = user.username
         self.userDetailsUseCase = userDetailsUseCase
     }
     
-    func updateUser(user: LoginModel) {
-        userDetailsUseCase.updateUser(user: user)
+    func updateUser() {
+        userDetailsUseCase.updateUser(user: loginModel)
     }
 }

@@ -53,8 +53,8 @@ class Coordinator: ObservableObject {
         return UsersListView(viewModel: usersListViewModel)
     }
     
-    func makeUserDetails(user: Binding<LoginModel>) -> UserDetailView {
-        let userDetailViewModel = UserDetailViewModel(userDetailsUseCase: UserDetailsUseCase(userDetailsRepository: containter.userDetailsRepository))
-        return UserDetailView(users: user, viewModel: userDetailViewModel)
+    func makeUserDetails(user: LoginModel) -> UserDetailView {
+        let userDetailViewModel = UserDetailViewModel(user: user, userDetailsUseCase: UserDetailsUseCase(userDetailsRepository: containter.userDetailsRepository))
+        return UserDetailView(viewModel: userDetailViewModel)
     }
 }

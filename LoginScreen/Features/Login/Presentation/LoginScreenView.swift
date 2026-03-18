@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginScreenView: View {
-    @StateObject var viewModel
+    @StateObject var viewModel: LoginViewModel
     
     var body: some View {
         NavigationStack {

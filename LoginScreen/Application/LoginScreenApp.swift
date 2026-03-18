@@ -10,9 +10,13 @@ import SwiftUI
 @main
 struct LoginScreenApp: App {
     
+    @StateObject var coordinator = Coordinator(containter: AppContainer())
+    
     var body: some Scene {
         WindowGroup {
-            LoginScreenView()
+            NavigationStack(path: $coordinator.path) {
+                coordinator.makeLoginView()
+            }
         }
     }
 }

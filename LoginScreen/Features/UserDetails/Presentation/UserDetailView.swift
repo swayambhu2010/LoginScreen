@@ -9,7 +9,6 @@ import SwiftUI
 import CoreData
 
 struct UserDetailView: View {
-    @Binding var users: LoginModel
     @StateObject var viewModel: UserDetailViewModel
     
     @Environment(\.dismiss) var dismiss
@@ -17,7 +16,7 @@ struct UserDetailView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 30) {
-                TextField("Please update username", text: $users.username, prompt: Text("Please update username"))
+                TextField("Please update username", text: $viewModel.userName, prompt: Text("Please update username"))
                 .frame(maxWidth: .infinity)
                 .frame(height: 40)
                 .padding(10)
@@ -27,7 +26,7 @@ struct UserDetailView: View {
                 }
                 
                 Button {
-                     viewModel.updateUser(user: users)
+                     viewModel.updateUser()
                      dismiss()
                 } label: {
                     Text("Update")
@@ -46,13 +45,12 @@ struct UserDetailView: View {
 }
 
 #Preview {
-    UserDetailView(
-            users: .constant(
+   /* UserDetailView(
+            users:
                 LoginModel(
                     username: "Sjb",
                     password: "123",
                     uuid: UUID()
                 )
-            )
-        )
+        )*/
 }
