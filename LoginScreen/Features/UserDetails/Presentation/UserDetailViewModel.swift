@@ -23,6 +23,7 @@ class UserDetailViewModel: ObservableObject {
     }
     
     func updateUser() {
+        loginModel.username = userName
         userDetailsUseCase.updateUser(user: loginModel)
     }
 }
