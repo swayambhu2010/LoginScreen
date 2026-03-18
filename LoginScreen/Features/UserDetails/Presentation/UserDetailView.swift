@@ -10,7 +10,7 @@ import CoreData
 
 struct UserDetailView: View {
     @Binding var users: LoginModel
-    @StateObject var viewModel: UserDetailViewModel = AppContainer.shared.makeUserDetailsViewModel()
+    @StateObject var viewModel: UserDetailViewModel
     
     @Environment(\.dismiss) var dismiss
     

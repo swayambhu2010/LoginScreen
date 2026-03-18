@@ -9,38 +9,27 @@ import Foundation
 
 final class AppContainer {
     
-    static let shared = AppContainer()
     lazy var databaseManager: DataBaseManager = {
         DataBaseManager()
     }()
     
-    private init() { }
+    lazy var networkService: NetworkServiceProviderProtocol = {
+        NetworkService()
+    }()
     
-    func makeLoginViewModel() -> LoginViewModel {
-        let networkService: NetworkServiceProviderProtocol = NetworkService()
-        let dataBaseService: DataBaseProviderProtocol = DataBaseProvider(databaseManager: databaseManager)
-        
-        let loginRepository = LoginRepository(networkProvider: networkService, dataBaseProvider: dataBaseService)
-        let loginUseCase = LoginUseCase(loginRepository: loginRepository)
-        
-        let loginViewModel = LoginViewModel(loginUseCase: loginUseCase)
-        return loginViewModel
-    }
+    lazy var dataBaseService: DataBaseProviderProtocol = {
+        DataBaseProvider(databaseManager: databaseManager)
+    }()
     
+    lazy var loginRepository = {
+        LoginRepository(networkProvider: networkService, dataBaseProvider: dataBaseService)
+    }()
     
-    func makeUserDetailsViewModel() -> UserDetailViewModel {
-        let userDetailsRepository = UserDetailsRepository(databaseManager: databaseManager)
-        let userDetailsUseCase = UserDetailsUseCase(userDetailsRepository: userDetailsRepository)
-        
-        let userDetailsViewModel = UserDetailViewModel(userDetailsUseCase: userDetailsUseCase)
-        return userDetailsViewModel
-    }
+    lazy var userDetailsRepository = {
+        UserDetailsRepository(databaseManager: databaseManager)
+    }()
     
-    func makeUserListViewModel() -> UserListViewModel {
-        let userListRepository = UsersListRepository(databaseManager: databaseManager)
-        let userListUseCase = UserListUseCase(userListRepository: userListRepository)
-        
-        let userListViewModel = UserListViewModel(userListUseCase: userListUseCase)
-        return userListViewModel
-    }
+    lazy var userListRepository = {
+        UsersListRepository(databaseManager: databaseManager)
+    }()
 }

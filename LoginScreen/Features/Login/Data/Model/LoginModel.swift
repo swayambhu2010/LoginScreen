@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LoginModel: Codable {
+struct LoginModel: Codable, Hashable {
     var username: String
     var password: String
     var uuid: UUID
