@@ -15,8 +15,19 @@ class MockSessionManager: SessionManagerProtocol {
     var lastRequest: URLRequest?
     
     func exectute(request: URLRequest) async throws -> Result<Data, NetworkError> {
-        
+        isExecuted = true
+        lastRequest = request
+        return result
     }
-    
-    
 }
+
+class MockDecoder: DecoderProtocol {
+    
+    var isCalled: Bool = false
+    var result: Result<UserModel?, NetworkError> = .success(UserModel(userName: "Swayambhu", token: "Bearer"))
+    func decode<T>(data: Data) throws -> Result<T?, NetworkError> where T : Decodable {
+        isCalled = true
+        return result as! Result<T?, NetworkError>
+    }
+}
+    

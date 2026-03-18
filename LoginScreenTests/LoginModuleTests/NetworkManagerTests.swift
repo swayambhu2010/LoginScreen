@@ -2,34 +2,156 @@
 //  NetworkManagerTests.swift
 //  LoginScreenTests
 //
-//  Created by Swayambhu BANERJEE on 18/03/26.
-//
 
 import XCTest
+@testable import LoginScreen
 
 final class NetworkManagerTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    var networkManager: NetworkManager!
+    var mockSession: MockSessionManager!
+    var mockDecoder: MockDecoder!
+
+    // A helper valid endpoint used across all tests
+    let validEndpoint = Endpoint(
+        baseURL: "https://www.example.com",
+        path: "/user",
+        method: .post,
+        header: ["Content-Type": "application/json"],
+        body: nil
+    )
+
+    override func setUp() {
+        super.setUp()
+        mockSession = MockSessionManager()
+        mockDecoder = MockDecoder()
+        networkManager = NetworkManager(session: mockSession, decode: mockDecoder)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    override func tearDown() {
+        networkManager = nil
+        mockSession = nil
+        mockDecoder = nil
+        super.tearDown()
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+    // -------------------------------------------------------------------------
+    // TEST 1: Bad URL → returns .badrequest WITHOUT calling session
+    // -------------------------------------------------------------------------
+    func testSend_WithInvalidURL_ShouldReturnBadRequest() async {
+        // Arrange — endpoint with empty baseURL produces nil urlRequest
+        let badEndpoint = Endpoint(baseURL: "", path: "", method: .get, header: nil, body: nil)
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        // Act
+        let result: Result<UserModel?, NetworkError> = await networkManager.send(url: badEndpoint)
+
+        // Assert
+        XCTAssertFalse(mockSession.isExecuted)   // session should NEVER be called
+        switch result {
+        case .failure(let error):
+            XCTAssertEqual(error, .badrequest)
+        case .success:
+            XCTFail("Expected .badrequest but got success")
         }
     }
 
+    // -------------------------------------------------------------------------
+    // TEST 2: Session returns success + Decoder returns model → success
+    // -------------------------------------------------------------------------
+    func testSend_WhenSessionSucceeds_AndDecoderSucceeds_ShouldReturnModel() async {
+        // Arrange
+        let expectedUser = UserModel(userName: "testuser", token: "token123")
+        mockSession.result = .success(Data())               // session returns raw data
+        mockDecoder.result = .success(expectedUser)         // decoder parses it to UserModel
+
+        // Act
+        let result: Result<UserModel?, NetworkError> = await networkManager.send(url: validEndpoint)
+
+        // Assert
+        XCTAssertTrue(mockSession.isExecuted)    // ✅ session was called
+        XCTAssertTrue(mockDecoder.isCalled)     // ✅ decoder was called
+        switch result {
+        case .success(let user):
+            XCTAssertEqual(user?.userName, "testuser")
+            XCTAssertEqual(user?.token, "token123")
+        case .failure:
+            XCTFail("Expected success but got failure")
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // TEST 3: Session returns network failure → error is forwarded
+    // -------------------------------------------------------------------------
+    func testSend_WhenSessionFails_ShouldReturnNetworkError() async {
+        // Arrange
+        mockSession.result = .failure(.serverError(statusCode: 500))
+
+        // Act
+        let result: Result<UserModel?, NetworkError> = await networkManager.send(url: validEndpoint)
+
+        // Assert
+        XCTAssertTrue(mockSession.isExecuted)    // ✅ session was called
+        XCTAssertFalse(mockDecoder.isCalled)    // ✅ decoder should NOT be called
+        switch result {
+        case .failure(let error):
+            XCTAssertEqual(error, .serverError(statusCode: 500))
+        case .success:
+            XCTFail("Expected failure but got success")
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // TEST 4: Session succeeds but Decoder fails → decodingError
+    // -------------------------------------------------------------------------
+    func testSend_WhenSessionSucceeds_ButDecoderFails_ShouldReturnDecodingError() async {
+        // Arrange
+        mockSession.result = .success(Data())
+        mockDecoder.result = .failure(.decodingError)
+
+        // Act
+        let result: Result<UserModel?, NetworkError> = await networkManager.send(url: validEndpoint)
+
+        // Assert
+        XCTAssertTrue(mockSession.isExecuted)    // ✅ session was called
+        XCTAssertTrue(mockDecoder.isCalled)     // ✅ decoder was called
+        switch result {
+        case .failure(let error):
+            XCTAssertEqual(error, .decodingError)
+        case .success:
+            XCTFail("Expected decodingError but got success")
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // TEST 5: Correct HTTP method is set on the request
+    // -------------------------------------------------------------------------
+    func testSend_ShouldSetCorrectHTTPMethod() async {
+        // Arrange
+        mockSession.result = .success(Data())
+        mockDecoder.result = .success(nil)
+
+        // Act
+        let _: Result<UserModel?, NetworkError> = await networkManager.send(url: validEndpoint)
+
+        // Assert
+        XCTAssertEqual(mockSession.lastRequest?.httpMethod, "POST")  // ✅ method is POST
+    }
+
+    // -------------------------------------------------------------------------
+    // TEST 6: Correct headers are set on the request
+    // -------------------------------------------------------------------------
+    func testSend_ShouldSetCorrectHeaders() async {
+        // Arrange
+        mockSession.result = .success(Data())
+        mockDecoder.result = .success(nil)
+
+        // Act
+        let _: Result<UserModel?, NetworkError> = await networkManager.send(url: validEndpoint)
+
+        // Assert
+        XCTAssertEqual(
+            mockSession.lastRequest?.allHTTPHeaderFields?["Content-Type"],
+            "application/json"
+        )
+    }
 }
