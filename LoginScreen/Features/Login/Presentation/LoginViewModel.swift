@@ -32,6 +32,9 @@ class LoginViewModel: ObservableObject {
     
     func validation() {
         Task {
+            
+           defer { isLoading = false }
+           isLoading = true
            let result = await loginUseCase.loginValidation(userName: userName, password: password)
             switch result {
             case .success(_):

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol UserDetailsUseCaseProtocol {
-    func updateUser(user: LoginModel)
+    func updateUser(user: LoginModel) throws -> Bool
 }
 
 class UserDetailsUseCase: UserDetailsUseCaseProtocol {
@@ -18,8 +18,8 @@ class UserDetailsUseCase: UserDetailsUseCaseProtocol {
         self.userDetailsRepository = userDetailsRepository
     }
     
-    func updateUser(user: LoginModel) {
-        userDetailsRepository.updateUser(user: user)
+    func updateUser(user: LoginModel) throws -> Bool {
+        return try userDetailsRepository.updateUser(user: user)
     }
     
 }

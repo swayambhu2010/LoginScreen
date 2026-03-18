@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 protocol UserDetailsRepositoryProtocol {
-    func updateUser(user: LoginModel)
+    func updateUser(user: LoginModel) throws -> Bool
 }
 
 class UserDetailsRepository: UserDetailsRepositoryProtocol {
@@ -20,7 +20,7 @@ class UserDetailsRepository: UserDetailsRepositoryProtocol {
         self.databaseManager = databaseManager
     }
     
-    func updateUser(user: LoginModel) {
-        databaseManager.updateUser(user: user)
+    func updateUser(user: LoginModel) throws -> Bool {
+        return try databaseManager.updateUser(user: user)
     }
 }

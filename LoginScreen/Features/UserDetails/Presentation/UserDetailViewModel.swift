@@ -14,6 +14,8 @@ class UserDetailViewModel: ObservableObject {
     private let userDetailsUseCase: UserDetailsUseCaseProtocol
     
     @Published var userName: String
+    @Published var isLoading: Bool = false
+    @Published var errorMessage: String = ""
     private var loginModel: LoginModel
     
     init(user: LoginModel, userDetailsUseCase: UserDetailsUseCaseProtocol) {
@@ -24,6 +26,11 @@ class UserDetailViewModel: ObservableObject {
     
     func updateUser() {
         loginModel.username = userName
-        userDetailsUseCase.updateUser(user: loginModel)
+        do {
+            isLoading = try userDetailsUseCase.updateUser(user: loginModel)
+        }
+        catch {
+            errorMessage = "Updation is failed"
+        }
     }
 }

@@ -11,34 +11,41 @@ struct LoginScreenView: View {
     @StateObject var viewModel: LoginViewModel
     
     var body: some View {
-            VStack(alignment: .leading) {
-                TextFieldProvider(isSecureField: false, placeHolderText: "Please enter your username", text: $viewModel.userName)
-                TextFieldProvider(isSecureField: true, placeHolderText: "Please enter your password", text: $viewModel.password)
-                HintText(hintText: $viewModel.passwordHintText)
-                
-                Button {
-                    // Action
-                    viewModel.validation()
-                } label: {
-                    Text("SignUp")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 40)
-                        .overlay(content: {
-                            RoundedRectangle(cornerRadius: 5)
-                                .stroke(lineWidth: 1.0)
-                        })
+        VStack(alignment: .leading) {
+            TextFieldProvider(isSecureField: false, placeHolderText: "Please enter your username", text: $viewModel.userName)
+            TextFieldProvider(isSecureField: true, placeHolderText: "Please enter your password", text: $viewModel.password)
+            HintText(hintText: $viewModel.passwordHintText)
+            
+            Button {
+                // Action
+                viewModel.validation()
+            } label: {
+                Group {
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .tint(.primary)
+                    } else {
+                        Text("SignUp")
+                    }
                 }
-                .padding()
+                .frame(maxWidth: .infinity)
+                .frame(height: 40)
+                .overlay(content: {
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(lineWidth: 1.0)
+                })
             }
-            .alert("Warning", isPresented: Binding(
-                get: { viewModel.errorMessage != nil },
-                set: {_ in viewModel.errorMessage = nil }
-                )
-            ) {
-                Button("Ok", role: .cancel) { }
-            } message: {
-                Text(viewModel.errorMessage ?? "")
-            }
+            .padding()
+        }
+        .alert("Warning", isPresented: Binding(
+            get: { viewModel.errorMessage != nil },
+            set: {_ in viewModel.errorMessage = nil }
+        )
+        ) {
+            Button("Ok", role: .cancel) { }
+        } message: {
+            Text(viewModel.errorMessage ?? "")
+        }
     }
 }
 
@@ -46,7 +53,7 @@ struct TextFieldProvider: View {
     var isSecureField: Bool = false
     var placeHolderText: String = ""
     // This will work but it will tightly couple the view so instead use Binding
-   // @ObservedObject var viewModel: LoginViewModel
+    // @ObservedObject var viewModel: LoginViewModel
     
     @Binding var text: String
     
@@ -86,5 +93,5 @@ struct HintText: View {
 }
 
 /*#Preview {
-    LoginScreenView()
-}*/
+ LoginScreenView()
+ }*/

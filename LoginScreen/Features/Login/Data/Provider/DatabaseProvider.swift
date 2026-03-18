@@ -12,7 +12,7 @@ protocol DataBaseProviderProtocol {
     func saveUser(user: LoginModel)
     func getAllUsers() -> [LoginModel]
     func deleteUser(user: LoginModel)
-    func updateUser(user: LoginModel)
+    func updateUser(user: LoginModel) throws -> Bool
 }
 
 class DataBaseProvider: DataBaseProviderProtocol {
@@ -35,7 +35,7 @@ class DataBaseProvider: DataBaseProviderProtocol {
         databaseManager.deleteUser(user: user)
     }
     
-    func updateUser(user: LoginModel) {
-        databaseManager.updateUser(user: user)
+    func updateUser(user: LoginModel) throws -> Bool {
+       try databaseManager.updateUser(user: user)
     }
 }

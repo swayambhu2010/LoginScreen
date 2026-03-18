@@ -13,7 +13,7 @@ protocol DataBaseManagerProtocol {
     func saveUser(userModel: LoginModel)
     func getAllUsers() -> [LoginModel]
     func deleteUser(user: LoginModel)
-    func updateUser(user: LoginModel)
+    func updateUser(user: LoginModel) throws -> Bool
 }
 
 final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
@@ -71,19 +71,19 @@ final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
         }
     }
     
-    func updateUser(user: LoginModel) {
+    func updateUser(user: LoginModel) throws -> Bool {
             let id = user.uuid
             guard let userData = fetchUser(id: id) else {
-            print("Fetch User Failed")
-            return
+                throw DataBaseError.fetchError
         }
         userData.userName = user.username
         
         do {
             try persistentContainer.viewContext.save()
+            return true
         } catch {
             persistentContainer.viewContext.rollback()
-            print("Save context failed \(error.localizedDescription)")
+            throw DataBaseError.saveError
         }
     }
     

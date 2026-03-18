@@ -25,10 +25,17 @@ struct UserDetailView: View {
                 }
                 
                 Button {
+                   
                      viewModel.updateUser()
                      dismiss()
                 } label: {
-                    Text("Update")
+                    Group {
+                        if viewModel.isLoading {
+                            ProgressView().tint(.primary)
+                        } else {
+                            Text("Update")
+                        }
+                    }
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
                         .overlay {
