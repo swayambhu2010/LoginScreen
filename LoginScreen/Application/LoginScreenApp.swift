@@ -15,7 +15,7 @@ struct LoginScreenApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $coordinator.path) {
-                coordinator.makeLoginView()
+                coordinator.makeScreenView(to: .loginScreen)
                     .navigationDestination(for: Route.self) { route in
                         coordinator.makeScreenView(to: route)
                     }

@@ -28,6 +28,20 @@ final class DataBaseManager: DataBaseManagerProtocol, ObservableObject {
            }
         }
     }
+    
+    init(inMemory: Bool) {
+        persistentContainer = NSPersistentContainer(name: "UserCoreDataModel")
+        if inMemory {
+            let description = NSPersistentStoreDescription()
+            description.type = NSInMemoryStoreType
+            persistentContainer.persistentStoreDescriptions = [description]
+        }
+        persistentContainer.loadPersistentStores { (description, error) in
+            if let error = error {
+                fatalError("Core Data Store Failed \(error.localizedDescription)")
+            }
+        }
+    }
 
     func saveUser(userModel: LoginModel) {
         let user = UserData(context: persistentContainer.viewContext)
